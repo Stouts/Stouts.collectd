@@ -33,7 +33,7 @@ collectd_write_graphite: no
 collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org/wiki/index.php/Plugin:Write_Graphite)
   Host: "{{inventory_hostname}}"
   Port: 2003
-  # Prefix: "{{inventory_hostname}}"
+  Prefix: stats.
   # Postfix: .collectd
   # Protocol: tcp
   AlwaysAppendDS: 'false'
