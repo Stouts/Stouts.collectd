@@ -35,7 +35,7 @@ collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org
   Port: 2003
   Prefix: stats.
   # Postfix: .collectd
-  # Protocol: tcp
+  Protocol: tcp
   AlwaysAppendDS: 'false'
   EscapeCharacter: _
   LogSendErrors: 'true'
