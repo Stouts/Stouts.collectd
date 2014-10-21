@@ -8,6 +8,21 @@ ReadThreads  {{ collectd_readthreads }}
 {% endif %}
 FQDNLookup {{ 'true' if collectd_fdqnlookup else 'false' }}
 
+# Logging
+{% if collectd_logpath %}
+LoadPlugin logfile
+<Plugin logfile>
+        LogLevel "{{collectd_loglevel}}"
+        File "{{collectd_logpath}}"
+        Timestamp true
+</Plugin>
+{% else %}
+<Plugin syslog>
+        LogLevel "{{collectd_loglevel}}"
+        NotifyLevel "OKAY"
+</Plugin>
+{% endif %}
+
 # Default plugins
 {% for plugin in collectd_default_plugins %}
 LoadPlugin {{ plugin }}

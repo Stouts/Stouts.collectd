@@ -26,34 +26,32 @@ collectd_plugins: []                # Ex. [nginx, memcached]
 collectd_plugins_options: {}        # See below for examples.
 
 # Collectd default plugins
-collectd_default_plugins: [logfile, cpu, df, disk, interface, load, memory, swap, vmem, protocols]
+collectd_default_plugins: [cpu, df, interface, load, memory, swap, vmem]
 collectd_default_plugins_options:
-  logfile:
-  - LogLevel "info"
-  - File "{{collectd_logpath}}"
-  - Timestamp true
   vmem:
   - Verbose false
   swap:
   - ReportByDevice false
-  protocols:
-  - Value "/^Tcp:/"
+  interface:
+  - Interface lo
+  - IgnoreSelected true
 
 # Collectd graphite options
 collectd_write_graphite: no
 collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org/wiki/index.php/Plugin:Write_Graphite)
   Host: "{{inventory_hostname}}"
   Port: 2003
-  # Prefix: "{{inventory_hostname}}"
+  Prefix: stats.
   # Postfix: .collectd
-  # Protocol: tcp
+  Protocol: tcp
   AlwaysAppendDS: 'false'
   EscapeCharacter: _
   LogSendErrors: 'true'
   StoreRates: 'true'
 
 # Setup logs
-collectd_logpath: /var/log/collectd.log
+collectd_logpath:                   # If it is not empty, will be used logfile
+collectd_loglevel: info
 collectd_logrotate: yes
 collectd_logrotate_options:
   - compress
