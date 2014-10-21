@@ -17,6 +17,7 @@ LoadPlugin logfile
         Timestamp true
 </Plugin>
 {% else %}
+LoadPlugin syslog
 <Plugin syslog>
         LogLevel "{{collectd_loglevel}}"
         NotifyLevel "OKAY"
