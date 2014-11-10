@@ -2,8 +2,7 @@ Stouts.collectd
 ==========
 
 [![Build Status](http://img.shields.io/travis/Stouts/Stouts.collectd.svg?style=flat-square)](https://travis-ci.org/Stouts/Stouts.collectd)
-[![Galaxy](http://img.shields.io/badge/galaxy-Stouts.collectd-blue.svg?style=flat-square)](https://galaxy.collectd.com/list#/roles/1960)
-[![Tag](http://img.shields.io/github/tag/Stouts/Stouts.collectd.svg?style=flat-square)]()
+[![Galaxy](http://img.shields.io/badge/galaxy-Stouts.collectd-blue.svg?style=flat-square)](https://galaxy.ansible.com/list#/roles/1960)
 
 Ansible role which help you with:
 
@@ -27,15 +26,17 @@ collectd_plugins: []                # Ex. [nginx, memcached]
 collectd_plugins_options: {}        # See below for examples.
 
 # Collectd default plugins
-collectd_default_plugins: [cpu, df, interface, load, memory, swap, vmem]
+collectd_default_plugins: [cpu, df, interface, load, memory, swap]
 collectd_default_plugins_options:
-  vmem:
-  - Verbose false
   swap:
   - ReportByDevice false
   interface:
   - Interface lo
   - IgnoreSelected true
+
+# Additional types
+# format: { name: ..., value: ... }
+collectd_types: []
 
 # Collectd graphite options
 collectd_write_graphite: no

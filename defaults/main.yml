@@ -15,15 +15,17 @@ collectd_plugins: []                # Ex. [nginx, memcached]
 collectd_plugins_options: {}        # See below for examples.
 
 # Collectd default plugins
-collectd_default_plugins: [cpu, df, interface, load, memory, swap, vmem]
+collectd_default_plugins: [cpu, df, interface, load, memory, swap]
 collectd_default_plugins_options:
-  vmem:
-  - Verbose false
   swap:
   - ReportByDevice false
   interface:
   - Interface lo
   - IgnoreSelected true
+
+# Additional types
+# format: { name: ..., value: ... }
+collectd_types: []
 
 # Collectd graphite options
 collectd_write_graphite: no
