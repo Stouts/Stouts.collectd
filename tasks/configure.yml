@@ -1,15 +1,16 @@
 ---
 
 - name: collectd-configure | Configure Collectd
-  template: src=collectd.conf.j2 dest={{collectd_prefix}}/etc/collectd.conf validate='{{collectd_prefix}}/sbin/collectd -t -C %s' 
+  template: src=collectd.conf.j2 dest={{collectd_prefix_conf}}/collectd.conf validate='{{collectd_prefix_sbin}}/collectd -t -C %s'
   notify: collectd restart
 
 - name: collectd-configure | Configure types
-  template: src=types.db.j2 dest={{collectd_prefix}}/etc/types.db
+  template: src=types.db.j2 dest={{collectd_prefix_type}}/types.db
   notify: collectd restart
 
 - name: collectd-configure | Setup Collectd service
   template: src=upstart.conf.j2 dest=/etc/init/collectd.conf
+  when: collectd_upstart
 
 - name: collectd-configure | Ensure the Collectd is enabled and started
   service: name=collectd state=started enabled=yes
