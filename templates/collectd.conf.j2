@@ -5,7 +5,7 @@
 Interval     {{ collectd_interval }}
 ReadThreads  {{ collectd_readthreads }}
 TypesDB "{{collectd_prefix}}/share/collectd/types.db"
-TypesDB "{{collectd_prefix}}/etc/types.db"
+TypesDB "{{collectd_prefix_type}}/types.db"
 {% if collectd_hostname %}Hostname {{ collectd_hostname }}
 {% endif %}
 FQDNLookup {{ 'true' if collectd_fdqnlookup else 'false' }}
@@ -61,3 +61,7 @@ LoadPlugin write_graphite
   </Node>
 </Plugin>
 {% endif %}
+
+<Include "{{collectd_prefix_conf}}/collectd.conf.d">
+        Filter "*.conf"
+</Include>
