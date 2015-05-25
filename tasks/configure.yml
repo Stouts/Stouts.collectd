@@ -4,6 +4,9 @@
   template: src=collectd.conf.j2 dest={{collectd_prefix_conf}}/collectd.conf validate='{{collectd_prefix_sbin}}/collectd -t -C %s'
   notify: collectd restart
 
+- name: collectd-configure | Ensure conf.d directory
+  file: path={{collectd_plugins_prefix}} state=directory
+
 - name: collectd-configure | Configure types
   template: src=types.db.j2 dest={{collectd_prefix_type}}/types.db
   notify: collectd restart

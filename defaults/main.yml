@@ -6,6 +6,7 @@ collectd_prefix: /opt/collectd      # The place where Collectd will be installed
 collectd_prefix_type: "{{collectd_prefix}}/etc"
 collectd_prefix_conf: "{{collectd_prefix}}/etc"
 collectd_prefix_sbin: "{{collectd_prefix}}/sbin"
+collectd_plugins_prefix: "{{collectd_prefix_conf}}/conf.d"
 
 # General options
 collectd_interval: 10
