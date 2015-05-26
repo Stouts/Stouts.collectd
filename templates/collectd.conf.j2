@@ -62,6 +62,6 @@ LoadPlugin write_graphite
 </Plugin>
 {% endif %}
 
-<Include "{{collectd_prefix_conf}}/collectd.conf.d">
+<Include "{{collectd_plugins_prefix}}">
         Filter "*.conf"
 </Include>
