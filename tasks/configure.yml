@@ -1,23 +1,12 @@
 ---
 
 - name: collectd-configure | Configure Collectd
-  template: src=collectd.conf.j2 dest={{collectd_prefix_conf}}/collectd.conf validate='{{collectd_prefix_sbin}}/collectd -t -C %s'
+  template: src=collectd.conf.j2 dest={{collectd_config_file}} validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
 
 - name: collectd-configure | Ensure conf.d directory
-  file: path={{collectd_plugins_prefix}} state=directory
+  file: path={{collectd_config_dir}} state=directory
 
-- name: collectd-configure | Configure types
-  template: src=types.db.j2 dest={{collectd_prefix_type}}/types.db
+- name: collectd-configure | Configure additional types
+  template: src=types.db.j2 dest={{collectd_additional_types_db_path}}
   notify: collectd restart
-
-- name: collectd-configure | Setup Collectd service
-  template: src=upstart.conf.j2 dest=/etc/init/collectd.conf
-  when: collectd_upstart
-
-- name: collectd-configure | Ensure the Collectd is enabled and started
-  service: name=collectd state=started enabled=yes
-
-- name: collectd-configure | Setup logs rotation
-  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/collectd.conf
-  when: collectd_logpath and collectd_logrotate
