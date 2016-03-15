@@ -1,7 +1,7 @@
 ---
 
 - name: collectd-install | Install dependencies
-  apt: name={{item}}
+  apt: name={{item}} force=yes
   with_items: [build-essential, libcurl4-openssl-dev, libpcap-dev, librrd-dev, libyajl-dev]
 
 - name: collectd-install | Download Collectd
