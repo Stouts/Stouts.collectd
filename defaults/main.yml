@@ -2,6 +2,7 @@
 
 collectd_enabled: yes               # Enable the role
 collectd_version: 5.4.1             # Set version
+collectd_service: upstart
 
 # PPA options
 collectd_use_ppa: no                # Use the collectd PPA
@@ -55,7 +56,6 @@ collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org
 collectd_logpath:                   # If it is not empty, will be used logfile
 collectd_loglevel: info
 collectd_logrotate: yes
-collectd_upstart: yes
 collectd_type: yes
 collectd_logrotate_options:
   - compress
