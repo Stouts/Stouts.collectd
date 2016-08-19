@@ -12,7 +12,7 @@ Ansible role which help you with:
 
 ```yaml
 collectd_enabled: yes               # Enable the role
-collectd_version: 5.4.1             # Set version
+collectd_version: 5.5.2             # Set version
 
 # PPA options
 collectd_use_ppa: no                # Use the collectd PPA
