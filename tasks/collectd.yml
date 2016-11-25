@@ -7,7 +7,7 @@
   with_first_found:
   - "{{ ansible_os_family }}-{{ ansible_lsb.codename }}.yml"
   - "Debian-default.yml"
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' and collectd_service_autodetect
 
 - include: install.ppa.yml
   when: collectd_use_ppa

@@ -3,6 +3,7 @@
 collectd_enabled: yes               # Enable the role
 collectd_version: 5.5.2             # Set version
 collectd_service: upstart
+collectd_service_autodetect: true   # try to detect collectd_service
 
 # PPA options
 collectd_use_ppa: no                # Use the collectd PPA
