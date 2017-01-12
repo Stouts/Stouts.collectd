@@ -9,17 +9,17 @@
   - "Debian-default.yml"
   when: ansible_os_family == 'Debian' and collectd_service_autodetect
 
-- include: install.ppa.yml
-  when: collectd_use_ppa
+- include: install.pkg.yml
+  when: not collectd_from_source
   tags: [collectd, collectd-install]
 
-- include: install.deb.yml
-  when: not collectd_use_ppa and ansible_os_family == 'Debian'
+- include: install.src.yml
+  when: collectd_from_source
   tags: [collectd, collectd-install]
 
 - include: configure.yml
   tags: [collectd, collectd-configure]
 
 - include: configure-service.yml
-  when: not collectd_use_ppa
+  when: collectd_from_source
   tags: [collectd, collectd-configure]

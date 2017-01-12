@@ -14,12 +14,14 @@ Ansible role which help you with:
 collectd_enabled: yes               # Enable the role
 collectd_version: 5.5.2             # Set version
 
+# version options
+collectd_use_latest:  no            # Don't fix package version to collectd_version
+
 # PPA options
-collectd_use_ppa: no                # Use the collectd PPA
-collectd_use_ppa_latest: no         # Don't fix package version to collectd_version
 collectd_ppa_source: 'ppa:collectd/collectd-5.5'
 
 # Source options
+collectd_from_source: no            # Build collectd from sources, instead of existing packages
 collectd_prefix: /opt/collectd      # The place where Collectd will be installed
 
 # General options
