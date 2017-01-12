@@ -1,0 +1,20 @@
+---
+
+- name: collectd-install | Install dependencies
+  apt: name={{item}} force=yes
+  with_items: [build-essential, libcurl4-openssl-dev, libpcap-dev, libyajl-dev]
+
+- name: collectd-install | Download Collectd
+  get_url: url=http://collectd.org/files/collectd-{{collectd_version}}.tar.gz dest=/usr/src
+  register: collectd_source
+
+- name: collectd-install | Extract Collectd
+  unarchive: src=/usr/src/collectd-{{collectd_version}}.tar.gz dest=/usr/src copy=no
+  when: collectd_source.changed
+
+- name: collectd-install | Install Collectd
+  shell: ./configure --prefix={{collectd_prefix}} && make all install
+  args:
+    chdir: /usr/src/collectd-{{collectd_version}}
+    creates: "{{collectd_prefix}}"
+  when: collectd_source.changed
