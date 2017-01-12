@@ -4,12 +4,13 @@
   apt_repository: >
     repo={{ collectd_ppa_source }}
     update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
 
 - name: collectd-install | Install specific collectd package
   apt: >
     name=collectd={{ collectd_version }}
-  when: not collectd_use_ppa_latest
+  when: not collectd_use_latest
 
 - name: collectd-install | Install latest collectd package
   apt: name=collectd
-  when: collectd_use_ppa_latest
+  when: collectd_use_latest
