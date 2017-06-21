@@ -10,6 +10,11 @@
     name=collectd={{ collectd_version }}
   when: not collectd_use_ppa_latest
 
+- name: collectd-install | Install latest collectd minimal package
+  apt: name=collectd
+       install_recommends=no
+  when: collectd_use_ppa_latest and collectd_use_ppa_minimal
+
 - name: collectd-install | Install latest collectd package
   apt: name=collectd
-  when: collectd_use_ppa_latest
+  when: collectd_use_ppa_latest and not collectd_use_ppa_minimal
