@@ -74,3 +74,13 @@ collectd_config_file: "{{ '/etc/collectd/collectd.conf' if collectd_use_ppa else
 collectd_config_dir: "{{ '/etc/collectd/collectd.conf.d' if collectd_use_ppa else collectd_plugins_prefix }}"
 collectd_plugins_dir: "{{ '/usr/lib/collectd' if collectd_use_ppa else collectd_prefix + '/lib/collectd' }}"
 collectd_sbin_path: "{{ '/usr/sbin' if collectd_use_ppa else collectd_prefix_sbin }}"
+
+collectd_write_amqp: yes
+collectd_write_amqp_options:
+  - Host "indices-manager"
+  - Port "5672"
+  - User "indices"
+  - Password "manager"
+  - Exchange "collectd-exchange"
+  - RoutingKey "indices-perf-key"
+  

@@ -1,0 +1,11 @@
+<Plugin amqp>
+    <Publish "name-amqp">
+    {% for name, value in collectd_write_amqp_options.items() %}
+        {{ name }} "{{ value }}"
+    {% endfor %}
+        VHost "/"
+        Persistent false
+        StoreRates true
+        Format "json"
+    </Publish>
+</Plugin>
