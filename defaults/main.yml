@@ -36,6 +36,10 @@ collectd_default_plugins_options:
   interface:
   - Interface lo
   - IgnoreSelected true
+  cpu:
+  - ValuesPercentage true
+  - ReportByState false
+  - ReportByCpu false
 
 # Additional types
 # format: { name: ..., value: ... }
