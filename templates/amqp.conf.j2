@@ -1,3 +1,4 @@
+LoadPlugin amqp
 <Plugin amqp>
     <Publish "name-amqp">
     {% for name, value in collectd_write_amqp_options.items() %}
