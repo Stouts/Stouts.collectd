@@ -12,5 +12,5 @@
   notify: collectd restart
 
 - name: collectd-configure | Configure Addiotnal Plugin AMQP
-  template: src=amqp.conf.j2 dest={{collectd_config_dir}}/amqp.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  template: src=amqp.conf.j2 dest={{collectd_config_dir}}/amqp.conf
   notify: collectd restart

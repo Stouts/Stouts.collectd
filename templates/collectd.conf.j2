@@ -17,6 +17,7 @@ LoadPlugin logfile
         LogLevel "{{collectd_loglevel}}"
         File "{{collectd_logpath}}"
         Timestamp true
+        PrintSeverity true
 </Plugin>
 {% else %}
 LoadPlugin syslog

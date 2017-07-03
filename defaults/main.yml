@@ -56,7 +56,7 @@ collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org
 
 # Setup logs
 collectd_logpath:                   # If it is not empty, will be used logfile
-collectd_loglevel: info
+collectd_loglevel: notice
 collectd_logrotate: yes
 collectd_type: yes
 collectd_logrotate_options:
@@ -77,10 +77,10 @@ collectd_sbin_path: "{{ '/usr/sbin' if collectd_use_ppa else collectd_prefix_sbi
 
 collectd_write_amqp: yes
 collectd_write_amqp_options:
-  - Host "indices-manager"
-  - Port "5672"
-  - User "indices"
-  - Password "manager"
-  - Exchange "collectd-exchange"
-  - RoutingKey "indices-perf-key"
+  Host: "indices-manager"
+  Port: "5672"
+  User: "indices"
+  Password: "manager"
+  Exchange: "collectd-exchange"
+  RoutingKey: "indices-perf-key"
   
