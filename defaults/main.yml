@@ -39,7 +39,9 @@ collectd_default_plugins_options:
   cpu:
   - ValuesPercentage true
   - ReportByState false
-  - ReportByCpu false
+  - ReportByCpu true
+  - ReportNumCpu true
+
 
 # Additional types
 # format: { name: ..., value: ... }
