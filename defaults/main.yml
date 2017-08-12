@@ -1,7 +1,7 @@
 ---
 
 collectd_enabled: yes               # Enable the role
-collectd_version: 5.5.2             # Set version
+collectd_version: 5.7.2             # Set version
 collectd_service: upstart
 collectd_service_autodetect: true   # try to detect collectd_service
 
@@ -10,6 +10,9 @@ collectd_use_ppa: yes                # Use the collectd PPA
 collectd_use_ppa_latest: yes         # Don't fix package version to collectd_version
 collectd_ppa_source: 'ppa:collectd/collectd-5.5'
 collectd_use_ppa_minimal: yes
+
+collectd_use_ppa_ci: yes
+collectd_use_ppa_ci_codename: collectd-5.7
 
 # Source options
 collectd_prefix: /opt/collectd      # The place where Collectd will be installed

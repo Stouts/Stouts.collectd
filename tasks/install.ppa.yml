@@ -4,6 +4,22 @@
   apt_repository: >
     repo={{ collectd_ppa_source }}
     update_cache=yes
+  when: not collectd_use_ppa_ci 
+
+- name: collectd-install | add signing key 
+  apt_repository:
+    repo: deb http://pkg.ci.collectd.org/deb/ {{ansible_distribution_release}} {{collectd_use_ppa_ci_codename}}
+    state: present
+    filename: collectd-ci.list
+    update_cache: yes
+  when: collectd_use_ppa_ci 
+  
+
+- name: collectd-install | add signing key
+  apt_key:
+    url: "http://pkg.ci.collectd.org/pubkey.asc"
+    state: present
+  when: collectd_use_ppa_ci 
 
 - name: collectd-install | Install specific collectd package
   apt: >
