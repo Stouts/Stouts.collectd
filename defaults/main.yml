@@ -71,6 +71,11 @@ collectd_logrotate_options:
   - rotate 7
   - size 10M
 
+# If the csv path is set the plugin will be enabled
+#'/var/lib/collectd/csv'
+collectd_csv_logdir:
+collectd_csv_logdir_storerates: true
+
 # Paths
 collectd_types_db_path: "{{ '/usr/share/collectd/types.db' if collectd_use_ppa else collectd_prefix + '/share/collectd/types.db' }}"
 collectd_additional_types_db_path: "{{ '/usr/share/collectd/additional-types.db' if collectd_use_ppa else collectd_prefix_type + '/types.db' }}"
