@@ -22,7 +22,7 @@ collectd_plugins_prefix: "{{collectd_prefix_conf}}/conf.d"
 collectd_interval: 10
 collectd_readthreads: 7
 collectd_hostname: "{{ inventory_hostname }}"
-collectd_fdqnlookup: false
+collectd_fdqnlookup: true
 
 # Collectd plugins
 collectd_plugins: []                # Ex. [nginx, memcached]
@@ -88,8 +88,8 @@ collectd_write_amqp: yes
 collectd_write_amqp_options:
   Host: "indices-manager"
   Port: "5672"
-  User: "indices"
-  Password: "manager"
+  User: "indices_user"
+  Password: "indices_manager"
   Exchange: "collectd-exchange"
   RoutingKey: "indices-perf-key"
   
