@@ -17,9 +17,11 @@ LoadPlugin aggregation
     PluginInstance "/[{{ node_num }}]$/"
     GroupBy "Host"
     GroupBy "TypeInstance"
-    SetPlugin "numa_group_{{loop.index}}"
+    SetPlugin "numa-group-{{loop.index}}"
     {% for name, value in collectd_numa_cpu_aggr_options.items() %}
     {{ name }} {{ value }}
     {% endfor %}
-</Aggregation>{% endfor %}
-</Plugin>{% endif %}
+</Aggregation>
+{% endfor %}
+</Plugin>
+{% endif %}
