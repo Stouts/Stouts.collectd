@@ -14,3 +14,7 @@
 - name: collectd-configure | Configure Addiotnal Plugin AMQP
   template: src=amqp.conf.j2 dest={{collectd_config_dir}}/amqp.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
+
+- name: collectd-configure | Configure Additional Plugin NUMA CPU Aggregation
+  template: src=numa_cpu_aggregation.conf.j2 dest={{collectd_config_dir}}/numa_cpu_aggregation.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart

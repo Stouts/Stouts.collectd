@@ -1,0 +1,31 @@
+# Default plugins
+#LoadPlugin cpu
+#<Plugin cpu>
+# ValuesPercentage true
+# ReportByState false
+# ReportByCpu true
+# ReportNumCpu true
+#</Plugin>
+
+{% if collectd_numa_cpu_aggr %}
+LoadPlugin aggregation
+<Plugin "aggregation">
+  {% for node_num in collectd_numa_node_cpus.items() %}
+  <Aggregation>
+    Plugin "cpu"
+    Type "percent"
+    #PluginInstance "/[0,1]$/"
+    PluginInstance "/[{{node_num}}]$/"
+    GroupBy "Host"
+    GroupBy "TypeInstance"
+    #SetPlugin "ycpu-one" name of the plugin for which the data will be published
+    SetPlugin "numa_group_{{loop.index}}"
+   # SetPluginInstance "%{aggregation}"
+    #CalculateSum true
+    {% for name, value in collectd_numa_cpu_aggr_options.items() %}
+    {{ name }} "{{ value }}"
+    {% endfor %}
+    #CalculateAverage true
+  </Aggregation>
+    {% endfor %}
+{% endif %}
