@@ -18,3 +18,21 @@
 - name: collectd-configure | Configure Additional Plugin NUMA CPU Aggregation
   template: src=numa_cpu_aggregation.conf.j2 dest={{collectd_config_dir}}/numa_cpu_aggregation.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
+  
+- name: collectd-configure | Configure Additional Plugin Docker Stats 1 of 3
+  git: 
+    dest: /usr/share/collectd/docker-collectd-plugin
+    repo: "https://github.com/lebauce/docker-collectd-plugin.git"
+  when: docker_stats
+
+
+- name: collectd-configure | Configure Additional Plugin Docker Stats 2 of 3
+  shell: pip install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt
+  notify: collectd restart
+  when: docker_stats
+
+
+- name: collectd-configure | Configure Additional Plugin Docker Stats 3 of 3
+  template: src=docker.conf.j2 dest={{collectd_config_dir}}/docker.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: docker_stats

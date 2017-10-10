@@ -109,4 +109,6 @@ collectd_numa_cpu_aggr_options:
    CalculateSum: false
 
 
+# Enable docker monitoring by default
+docker_stats: yes
   
