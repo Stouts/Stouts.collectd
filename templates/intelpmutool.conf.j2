@@ -1,0 +1,8 @@
+LoadPlugin intel_pmu
+
+<Plugin intel_pmu>
+	{% for name, value in collectd_intel_pmutools_options.items() %}
+    {{ name }} "{{ value|lower }}"
+    {% endfor %}
+    EventList "{{ pmutools_event_dir }}"
+</Plugin>

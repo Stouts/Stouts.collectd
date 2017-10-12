@@ -32,8 +32,18 @@
   notify: collectd restart
   when: docker_stats
 
-
 - name: collectd-configure | Configure Additional Plugin Docker Stats 3 of 3
   template: src=docker.conf.j2 dest={{collectd_config_dir}}/docker.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
   when: docker_stats
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools
+  template: src=intelpmutool.conf.j2 dest={{collectd_config_dir}}/intelpmutool.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_intel_pmutools
+  
+- name: collectd-configure | Configure Additional Plugin intel_rdt
+  template: src=intelrdt.conf.j2 dest={{collectd_config_dir}}/intelrdt.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_intel_rdt
+  

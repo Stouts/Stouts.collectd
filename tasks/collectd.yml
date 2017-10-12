@@ -14,8 +14,14 @@
   tags: [collectd, collectd-install]
 
 - include: install.deb.yml
-  when: not collectd_use_ppa and ansible_os_family == 'Debian'
+  when: not collectd_use_ppa and not collectd_use_git and ansible_os_family == 'Debian'
   tags: [collectd, collectd-install]
+
+
+- include: install.git.yml
+  when: not collectd_use_ppa and collectd_use_git and ansible_os_family == 'Debian'
+  tags: [collectd, collectd-install]
+
 
 - include: configure.yml
   tags: [collectd, collectd-configure]

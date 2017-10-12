@@ -1,0 +1,32 @@
+---
+
+- name: collectd-install | Install dependencies
+  apt: name={{item}} force=yes
+  with_items: [build-essential, libcurl4-openssl-dev, libpcap-dev, libyajl-dev]
+
+- name: collectd-install | Download Collectd
+  git:
+    dest: "{{ collectd_prefix_git_src }}"
+    repo: "https://github.com/collectd/collectd.git"
+  become: yes
+  register: collectd_source
+
+- name: collectd-install | Install Collectd
+  shell: ./configure --prefix={{collectd_prefix}} &&  make && make all install
+  args:
+    chdir: "{{ collectd_prefix_git_src }}"
+  when: collectd_source.changed
+  become: yes
+
+- name: collectd-install | Create /etc/init.d/colelctd
+  template: src=init.collectd.j2 dest=/etc/init.d/collectd
+  become: yes
+
+
+- name: collectd-install | Enable collectd.service
+  shell: systemctl enable collectd.service
+  become: yes
+
+- name: collectd-install | start the collectd.service 
+  service: name=collectd state=started enabled=yes
+  become: yes

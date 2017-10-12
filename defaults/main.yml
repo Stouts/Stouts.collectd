@@ -6,7 +6,7 @@ collectd_service: upstart
 collectd_service_autodetect: true   # try to detect collectd_service
 
 # PPA options
-collectd_use_ppa: yes                # Use the collectd PPA
+collectd_use_ppa: no                # Use the collectd PPA
 collectd_use_ppa_latest: yes         # Don't fix package version to collectd_version
 collectd_ppa_source: 'ppa:collectd/collectd-5.5'
 collectd_use_ppa_minimal: yes
@@ -15,6 +15,8 @@ collectd_use_ppa_ci: yes
 collectd_use_ppa_ci_codename: collectd-5.7
 
 # Source options
+collectd_use_git: yes
+collectd_prefix_git_src: /home/ubuntu/collectd
 collectd_prefix: /opt/collectd      # The place where Collectd will be installed
 collectd_prefix_type: "{{collectd_prefix}}/etc"
 collectd_prefix_conf: "{{collectd_prefix}}/etc"
@@ -111,4 +113,20 @@ collectd_numa_cpu_aggr_options:
 
 # Enable docker monitoring by default
 docker_stats: yes
+
+
+
+# Enable docker monitoring by default
+collectd_intel_pmutools: yes
+pmutools_event_dir: ""
+collectd_intel_pmutools_options:
+  ReportHardwareCacheEvents: true
+  ReportKernelPMUEvents: true
+  ReportSoftwareEvents: true
+  HardwareEvents: "L2_RQSTS.CODE_RD_HIT,L2_RQSTS.CODE_RD_MISS" "L2_RQSTS.ALL_$"
+
+collectd_intel_rdt: no
+collectd_intel_rdt_interval: 1
+collectd_intel_rdt_options:
+  Cores: ""
   
