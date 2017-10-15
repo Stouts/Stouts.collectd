@@ -37,12 +37,28 @@
   notify: collectd restart
   when: docker_stats
 
-- debug:
-    var: pmutools_event_dir
-    verbosity: 2
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 1 of 4
+  shell: cat "{{ pmu_tools_dir }}"/eventlist_info.txt
+  become: yes
+  register: event_dir
   when: collectd_intel_pmutools
 
-- name: collectd-configure | Configure Additional Plugin intel_pmutools
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 2 of 4
+  set_fact: 
+    pmutools_event_dir: "{{ event_dir.stdout|default([])  }}"
+  when: collectd_intel_pmutools
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 3 of 4
+  debug:
+    var: pmutools_event_dir
+    verbosity: 4
+  when: collectd_intel_pmutools
+
+# - name: collectd-configure | Configure Additional Plugin intel_pmutools 4 of 5
+#   var: pmutools_event_dir
+#   when: collectd_intel_pmutools
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 4 of 4
   template: src=intelpmutool.conf.j2 dest={{collectd_config_dir}}/intelpmutool.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
   when: collectd_intel_pmutools

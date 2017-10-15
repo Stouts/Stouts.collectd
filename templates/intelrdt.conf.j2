@@ -1,9 +1,9 @@
 <LoadPlugin intel_rdt>
-	Interval "{{collectd_intel_rdt_interval }}""
+	Interval "{{collectd_intel_rdt_interval }}"
 </LoadPlugin>
 
 <Plugin "intel_rdt">
     {% for name, value in collectd_intel_rdt_options.items() %}
     {{ name }} "{{ value|lower }}"
     {% endfor %}
-</Plugin
+</Plugin>

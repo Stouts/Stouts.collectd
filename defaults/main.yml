@@ -119,11 +119,12 @@ docker_stats: yes
 # Enable docker monitoring by default
 collectd_intel_pmutools: no
 pmutools_event_dir: ""
+pmu_tools_dir: "/opt/pmu-tools"
 collectd_intel_pmutools_options:
   ReportHardwareCacheEvents: true
   ReportKernelPMUEvents: true
   ReportSoftwareEvents: true
-  HardwareEvents: "L2_RQSTS.CODE_RD_HIT,L2_RQSTS.CODE_RD_MISS" "L2_RQSTS.ALL_$"
+  HardwareEvents: "L2_RQSTS.CODE_RD_HIT,L2_RQSTS.CODE_RD_MISS,L2_RQSTS.ALL_$"
 
 collectd_intel_rdt: no
 collectd_intel_rdt_interval: 1
