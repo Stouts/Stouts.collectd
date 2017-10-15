@@ -18,7 +18,7 @@
   when: collectd_source.changed
   become: yes
 
-- name: collectd-install | Create /etc/init.d/colelctd
+- name: collectd-install | Create /etc/init.d/collectd
   template: src=init.collectd.j2 dest=/etc/init.d/collectd
   become: yes
 

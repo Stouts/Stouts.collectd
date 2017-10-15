@@ -37,6 +37,11 @@
   notify: collectd restart
   when: docker_stats
 
+- debug:
+    var: pmutools_event_dir
+    verbosity: 2
+  when: collectd_intel_pmutools
+
 - name: collectd-configure | Configure Additional Plugin intel_pmutools
   template: src=intelpmutool.conf.j2 dest={{collectd_config_dir}}/intelpmutool.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart

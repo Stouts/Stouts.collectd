@@ -20,6 +20,7 @@
     update_cache: yes
   when: collectd_use_ppa_ci 
 
+# TODO: refine this to decide only based on recommended packages or not
 - name: collectd-install | Install specific collectd package
   apt: >
     name=collectd={{ collectd_version }}
