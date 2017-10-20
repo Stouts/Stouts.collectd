@@ -10,16 +10,16 @@
   when: ansible_os_family == 'Debian' and collectd_service_autodetect
 
 - include: install.ppa.yml
-  when: collectd_use_ppa
+  when: install_collectd and collectd_use_ppa
   tags: [collectd, collectd-install]
 
 - include: install.deb.yml
-  when: not collectd_use_ppa and not collectd_use_git and ansible_os_family == 'Debian'
+  when: install_collectd and not collectd_use_ppa and not collectd_use_git and ansible_os_family == 'Debian'
   tags: [collectd, collectd-install]
 
 
 - include: install.git.yml
-  when: not collectd_use_ppa and collectd_use_git and ansible_os_family == 'Debian'
+  when: install_collectd and not collectd_use_ppa and collectd_use_git and ansible_os_family == 'Debian'
   tags: [collectd, collectd-install]
 
 

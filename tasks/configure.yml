@@ -24,12 +24,14 @@
 - name: collectd-configure | Configure Additional Plugin Docker Stats 1 of 3
   git: 
     dest: /usr/share/collectd/docker-collectd-plugin
-    repo: "https://github.com/lebauce/docker-collectd-plugin.git"
+    #repo: "https://github.com/lebauce/docker-collectd-plugin.git"
+    #repo: "https://github.com/signalfx/docker-collectd-plugin.git"
+    repo: "https://github.com/doc-vu/docker-collectd-plugin.git"
   when: docker_stats
 
 - name: collectd-configure | Configure Additional Plugin Docker Stats 2 of 3
-  shell: pip install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt
-  notify: collectd restart
+  shell: pip3 install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt && pip install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt
+  # notify: collectd restart
   when: docker_stats
 
 - name: collectd-configure | Configure Additional Plugin Docker Stats 3 of 3

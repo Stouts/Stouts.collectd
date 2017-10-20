@@ -1,5 +1,6 @@
 ---
 
+install_collectd: yes
 collectd_enabled: yes               # Enable the role
 collectd_version: 5.7.2             # Set version
 collectd_service: upstart

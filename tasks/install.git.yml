@@ -12,7 +12,7 @@
   register: collectd_source
 
 - name: collectd-install | Install Collectd
-  shell: ./build.sh && ./configure --prefix={{collectd_prefix}} &&  make && make all install
+  shell: ./build.sh && ./configure --prefix={{collectd_prefix}} --with-python LIBPYTHON_CPPFLAGS=/usr/include/python2.7 LIBPYTHON_LDFLAGS=/usr/local/lib/python2.7 PYTHON_CONFIG=/usr/bin/python2.7-config &&  make -j16 && make all install -j16
   args:
     chdir: "{{ collectd_prefix_git_src }}"
   # when: collectd_source.changed
