@@ -27,6 +27,7 @@
     #repo: "https://github.com/lebauce/docker-collectd-plugin.git"
     #repo: "https://github.com/signalfx/docker-collectd-plugin.git"
     repo: "https://github.com/doc-vu/docker-collectd-plugin.git"
+    force: yes
   when: docker_stats
 
 - name: collectd-configure | Configure Additional Plugin Docker Stats 2 of 3
