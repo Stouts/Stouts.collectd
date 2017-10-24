@@ -17,6 +17,7 @@ LoadPlugin logfile
         LogLevel "{{collectd_loglevel}}"
         File "{{collectd_logpath}}"
         Timestamp true
+        PrintSeverity true
 </Plugin>
 {% else %}
 LoadPlugin syslog
@@ -25,6 +26,18 @@ LoadPlugin syslog
         NotifyLevel "OKAY"
 </Plugin>
 {% endif %}
+
+# Logging CSV
+#StoreRates true|false
+#If set to true, convert counter values to rates. If set to false (the default) counter values are stored as is, i. e. as an increasing integer number.
+{% if collectd_csv_logdir %}
+LoadPlugin csv
+<Plugin "csv">
+  DataDir "{{collectd_csv_logdir}}"
+  StoreRates "{{collectd_csv_logdir_storerates|default('true')}}"
+</Plugin>
+{% endif %}
+
 
 # Default plugins
 {% for plugin in collectd_default_plugins %}

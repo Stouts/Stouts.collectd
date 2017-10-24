@@ -1,0 +1,28 @@
+# Default plugins
+#LoadPlugin cpu
+#<Plugin cpu>
+# ValuesPercentage true
+# ReportByState false
+# ReportByCpu true
+# ReportNumCpu true
+#</Plugin>
+
+{% if collectd_numa_cpu_aggr %}
+LoadPlugin aggregation
+<Plugin "aggregation">
+{% for node_num in collectd_numa_node_cpus %}
+<Aggregation>
+    Plugin "cpu"
+    Type "percent"
+    PluginInstance "/[{{ node_num }}]$/"
+    GroupBy "Host"
+    GroupBy "TypeInstance"
+    SetPlugin "numa-group"
+	SetPluginInstance "{{loop.index}}"
+    {% for name, value in collectd_numa_cpu_aggr_options.items() %}
+    {{ name }} {{ value| lower }}
+    {% endfor %}
+</Aggregation>
+{% endfor %}
+</Plugin>
+{% endif %}

@@ -10,3 +10,64 @@
 - name: collectd-configure | Configure additional types
   template: src=types.db.j2 dest={{collectd_additional_types_db_path}}
   notify: collectd restart
+
+- name: collectd-configure | Configure Addiotnal Plugin AMQP
+  template: src=amqp.conf.j2 dest={{collectd_config_dir}}/amqp.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_write_amqp
+
+- name: collectd-configure | Configure Additional Plugin NUMA CPU Aggregation
+  template: src=numa_cpu_aggregation.conf.j2 dest={{collectd_config_dir}}/numa_cpu_aggregation.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_numa_cpu_aggr
+  
+- name: collectd-configure | Configure Additional Plugin Docker Stats 1 of 3
+  git: 
+    dest: /usr/share/collectd/docker-collectd-plugin
+    #repo: "https://github.com/lebauce/docker-collectd-plugin.git"
+    #repo: "https://github.com/signalfx/docker-collectd-plugin.git"
+    repo: "https://github.com/doc-vu/docker-collectd-plugin.git"
+    force: yes
+  when: docker_stats
+
+- name: collectd-configure | Configure Additional Plugin Docker Stats 2 of 3
+  shell: pip3 install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt && pip install -r /usr/share/collectd/docker-collectd-plugin/requirements.txt
+  # notify: collectd restart
+  when: docker_stats
+
+- name: collectd-configure | Configure Additional Plugin Docker Stats 3 of 3
+  template: src=docker.conf.j2 dest={{collectd_config_dir}}/docker.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: docker_stats
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 1 of 4
+  shell: cat "{{ pmu_tools_dir }}"/eventlist_info.txt
+  become: yes
+  register: event_dir
+  when: collectd_intel_pmutools
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 2 of 4
+  set_fact: 
+    pmutools_event_dir: "{{ event_dir.stdout|default([])  }}"
+  when: collectd_intel_pmutools
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 3 of 4
+  debug:
+    var: pmutools_event_dir
+    verbosity: 4
+  when: collectd_intel_pmutools
+
+# - name: collectd-configure | Configure Additional Plugin intel_pmutools 4 of 5
+#   var: pmutools_event_dir
+#   when: collectd_intel_pmutools
+
+- name: collectd-configure | Configure Additional Plugin intel_pmutools 4 of 4
+  template: src=intelpmutool.conf.j2 dest={{collectd_config_dir}}/intelpmutool.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_intel_pmutools
+  
+- name: collectd-configure | Configure Additional Plugin intel_rdt
+  template: src=intelrdt.conf.j2 dest={{collectd_config_dir}}/intelrdt.conf validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  notify: collectd restart
+  when: collectd_intel_rdt
+  

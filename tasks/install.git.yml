@@ -1,0 +1,41 @@
+---
+
+- name: collectd-install | Install dependencies
+  apt: name={{item}} force=yes
+  with_items: [build-essential, libcurl4-openssl-dev, libpcap-dev, libyajl-dev, flex, bison, pkg-config, automake]
+
+- name: collectd-install | Download Collectd
+  git:
+    dest: "{{ collectd_prefix_git_src }}"
+    repo: "https://github.com/collectd/collectd.git"
+  become: yes
+  register: collectd_source
+
+- name: collectd-install | Install Collectd
+  shell: ./build.sh && ./configure --prefix={{collectd_prefix}} --with-python LIBPYTHON_CPPFLAGS=/usr/include/python2.7 LIBPYTHON_LDFLAGS=/usr/local/lib/python2.7 PYTHON_CONFIG=/usr/bin/python2.7-config &&  make -j16 && make all install -j16
+  args:
+    chdir: "{{ collectd_prefix_git_src }}"
+  # when: collectd_source.changed
+  become: yes
+  ignore_error: yes
+
+- name: collectd-install | Create /etc/init.d/collectd
+  template: src=initd.collectd.j2 dest=/etc/init.d/collectd
+  become: yes
+
+- name: collectd-install | create run/collectd.pid file  
+  shell: mkdir -p "{{collectd_prefix}}/run"
+  becom: yes
+
+
+- name: collectd-install | make it executable /etc/init.d/collectd
+  shell: chmod +x /etc/init.d/collectd
+  become: yes
+
+- name: collectd-install | Enable collectd.service
+  shell: systemctl enable collectd.service
+  become: yes
+
+- name: collectd-install | start the collectd.service 
+  service: name=collectd state=started enabled=yes
+  become: yes

@@ -1,16 +1,23 @@
 ---
 
+install_collectd: yes
 collectd_enabled: yes               # Enable the role
-collectd_version: 5.5.2             # Set version
+collectd_version: 5.7.2             # Set version
 collectd_service: upstart
 collectd_service_autodetect: true   # try to detect collectd_service
 
 # PPA options
 collectd_use_ppa: no                # Use the collectd PPA
-collectd_use_ppa_latest: no         # Don't fix package version to collectd_version
+collectd_use_ppa_latest: yes         # Don't fix package version to collectd_version
 collectd_ppa_source: 'ppa:collectd/collectd-5.5'
+collectd_use_ppa_minimal: yes
+
+collectd_use_ppa_ci: yes
+collectd_use_ppa_ci_codename: collectd-5.7
 
 # Source options
+collectd_use_git: yes
+collectd_prefix_git_src: /home/ubuntu/collectd
 collectd_prefix: /opt/collectd      # The place where Collectd will be installed
 collectd_prefix_type: "{{collectd_prefix}}/etc"
 collectd_prefix_conf: "{{collectd_prefix}}/etc"
@@ -21,7 +28,7 @@ collectd_plugins_prefix: "{{collectd_prefix_conf}}/conf.d"
 collectd_interval: 10
 collectd_readthreads: 7
 collectd_hostname: "{{ inventory_hostname }}"
-collectd_fdqnlookup: false
+collectd_fdqnlookup: true
 
 # Collectd plugins
 collectd_plugins: []                # Ex. [nginx, memcached]
@@ -35,6 +42,12 @@ collectd_default_plugins_options:
   interface:
   - Interface lo
   - IgnoreSelected true
+  cpu:
+  - ValuesPercentage true
+  - ReportByState false
+  - ReportByCpu true
+  - ReportNumCpu true
+
 
 # Additional types
 # format: { name: ..., value: ... }
@@ -55,7 +68,7 @@ collectd_write_graphite_options:    # Setup write_graphite (https://collectd.org
 
 # Setup logs
 collectd_logpath:                   # If it is not empty, will be used logfile
-collectd_loglevel: info
+collectd_loglevel: notice
 collectd_logrotate: yes
 collectd_type: yes
 collectd_logrotate_options:
@@ -66,6 +79,11 @@ collectd_logrotate_options:
   - rotate 7
   - size 10M
 
+# If the csv path is set the plugin will be enabled
+#'/var/lib/collectd/csv'
+collectd_csv_logdir:
+collectd_csv_logdir_storerates: true
+
 # Paths
 collectd_types_db_path: "{{ '/usr/share/collectd/types.db' if collectd_use_ppa else collectd_prefix + '/share/collectd/types.db' }}"
 collectd_additional_types_db_path: "{{ '/usr/share/collectd/additional-types.db' if collectd_use_ppa else collectd_prefix_type + '/types.db' }}"
@@ -73,3 +91,44 @@ collectd_config_file: "{{ '/etc/collectd/collectd.conf' if collectd_use_ppa else
 collectd_config_dir: "{{ '/etc/collectd/collectd.conf.d' if collectd_use_ppa else collectd_plugins_prefix }}"
 collectd_plugins_dir: "{{ '/usr/lib/collectd' if collectd_use_ppa else collectd_prefix + '/lib/collectd' }}"
 collectd_sbin_path: "{{ '/usr/sbin' if collectd_use_ppa else collectd_prefix_sbin }}"
+
+collectd_write_amqp: yes
+collectd_write_amqp_options:
+  Host: "indices-manager"
+  Port: "5672"
+  User: "indices_user"
+  Password: "indices_manager"
+  Exchange: "collectd-exchange"
+  RoutingKey: "indices-perf-key"
+
+
+
+collectd_numa_cpu_aggr: yes
+collectd_numa_node_cpus: [ "0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38",
+                         "1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39"]
+
+collectd_numa_cpu_aggr_options:
+   CalculateAverage: true
+   CalculateSum: false
+
+
+# Enable docker monitoring by default
+docker_stats: yes
+
+
+
+# Enable docker monitoring by default
+collectd_intel_pmutools: no
+pmutools_event_dir: ""
+pmu_tools_dir: "/opt/pmu-tools"
+collectd_intel_pmutools_options:
+  ReportHardwareCacheEvents: true
+  ReportKernelPMUEvents: true
+  ReportSoftwareEvents: true
+  HardwareEvents: "L2_RQSTS.CODE_RD_HIT,L2_RQSTS.CODE_RD_MISS,L2_RQSTS.ALL_$"
+
+collectd_intel_rdt: no
+collectd_intel_rdt_interval: 1
+collectd_intel_rdt_options:
+  Cores: ""
+  
