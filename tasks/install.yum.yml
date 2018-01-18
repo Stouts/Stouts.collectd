@@ -1,0 +1,13 @@
+---
+
+- name: collectd-install | Install specific collectd package (RedHat)
+  yum: 
+    name: collectd-{{ collectd_version }}
+    update_cache: True
+  when: not collectd_use_pkg_latest
+
+- name: collectd-install | Install latest collectd package (RedHat)
+  yum: 
+    name: collectd
+    update_cache: True
+  when: collectd_use_pkg_latest

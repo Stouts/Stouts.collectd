@@ -26,41 +26,27 @@ LoadPlugin syslog
 </Plugin>
 {% endif %}
 
-# Default plugins
-{% for plugin in collectd_default_plugins %}
+# Plugins
+{% for plugin in collectd_plugins_combined %}
 LoadPlugin {{ plugin }}
-{% if collectd_default_plugins_options.get(plugin) %}
+{% if collectd_plugins_options_combined.get(plugin) %}
 <Plugin {{plugin}}>
-{% for line in collectd_default_plugins_options[plugin] %}
-	{{line}}
+{% if plugin == 'write_graphite' %}
+ <Node "1">
+{% endif %}
+{% for name, value in collectd_plugins_options_combined[plugin].items() %}
+{% if value | lower in ['true', 'false'] %}
+	{{name}} {{value}}
+{% else %}
+	{{name}} "{{value}}"
+{% endif %}
 {% endfor %}
+{% if plugin == 'write_graphite' %}
+ </Node>
+{% endif %}
 </Plugin>
 {% endif %}
 {% endfor %}
-
-# User plugins
-{% for plugin in collectd_plugins %}
-LoadPlugin {{ plugin }}
-{% if collectd_plugins_options.get(plugin) %}
-<Plugin {{plugin}}>
-{% for line in collectd_plugins_options[plugin] %}
-	{{line}}
-{% endfor %}
-</Plugin>
-{% endif %}
-{% endfor %}
-
-{% if collectd_write_graphite %}
-# Carbon
-LoadPlugin write_graphite
-<Plugin write_graphite>
-  <Node "{{inventory_hostname}}">
-{% for name, value in collectd_write_graphite_options.items() %}
-    {{ name }} "{{ value }}"
-{% endfor %}
-  </Node>
-</Plugin>
-{% endif %}
 
 <Include "{{collectd_config_dir}}">
         Filter "*.conf"

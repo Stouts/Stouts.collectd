@@ -1,15 +1,20 @@
 ---
 
+#TODO, to change 
+#- name: fail, to change
+#  fail:
+#    msg:  TODO test manual installation
+
 - name: collectd-install | Install dependencies
-  apt: name={{item}} force=yes
-  with_items: [build-essential, libcurl4-openssl-dev, libpcap-dev, libyajl-dev]
+  package: name={{item}} state=present
+  with_items: "{{ collectd_source_packages }}"
 
 - name: collectd-install | Download Collectd
-  get_url: url=http://collectd.org/files/collectd-{{collectd_version}}.tar.gz dest=/usr/src
+  get_url: url=http://collectd.org/files/collectd-{{collectd_version}}.tar.bz2 dest=/usr/src
   register: collectd_source
 
 - name: collectd-install | Extract Collectd
-  unarchive: src=/usr/src/collectd-{{collectd_version}}.tar.gz dest=/usr/src copy=no
+  unarchive: src=/usr/src/collectd-{{collectd_version}}.tar.bz2 dest=/usr/src copy=no
   when: collectd_source.changed
 
 - name: collectd-install | Install Collectd

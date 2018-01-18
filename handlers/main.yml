@@ -2,3 +2,4 @@
 
 - name: collectd restart
   service: name=collectd state=restarted
+  become: True
