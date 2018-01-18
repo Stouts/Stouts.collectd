@@ -1,25 +1,38 @@
 ---
 
-- debug: var=ansible_os_family
-
 - name: Include OS-specific variables.
   include_vars: "{{item}}"
   with_first_found:
   - "{{ ansible_os_family }}-{{ ansible_lsb.codename }}.yml"
-  - "Debian-default.yml"
-  when: ansible_os_family == 'Debian' and collectd_service_autodetect
+  - "{{ ansible_os_family }}.yml"
 
 - import_tasks: install.ppa.yml
-  when: collectd_use_ppa
+  when: collectd_method_deduced == 'ppa'
+  become: True
+  tags: [collectd, collectd-install]
+
+- import_tasks: install.yum.yml
+  when: collectd_method_deduced == 'yum'
+  become: True
   tags: [collectd, collectd-install]
 
 - import_tasks: install.deb.yml
-  when: not collectd_use_ppa and ansible_os_family == 'Debian'
+  when: collectd_method_deduced == 'src' 
+  become: True
   tags: [collectd, collectd-install]
 
+
+- name: merge plugins
+  set_fact:
+    collectd_plugins_combined: "{{ collectd_default_plugins | union(collectd_plugins) | unique }}"
+    collectd_plugins_options_combined: "{{ collectd_default_plugins_options | combine(collectd_plugins_options, recursive=True) }}"
+  tags: [collectd, collectd-configure]
+
 - import_tasks: configure.yml
+  become: True
   tags: [collectd, collectd-configure]
 
 - import_tasks: configure-service.yml
-  when: not collectd_use_ppa
+  when: collectd_method_deduced == 'src'
+  become: True
   tags: [collectd, collectd-configure]

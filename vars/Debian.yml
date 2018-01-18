@@ -1,9 +1,10 @@
 ---
 
-collectd_service: systemd
+collectd_service: upstart
 collectd_method_deduced: "{{ collectd_method if collectd_method !='pkg' else 'ppa' }}"
 
 collectd_config_file_deduced: "{{ collectd_config_file if collectd_config_file else '/etc/collectd/collectd.conf' if collectd_method_deduced == 'ppa' else collectd_prefix_conf + '/collectd.conf' }}"
 collectd_config_dir_deduced:  "{{ collectd_config_dir  if collectd_config_dir  else '/etc/collectd/collectd.conf.d' if collectd_method_deduced == 'ppa' else collectd_plugins_prefix }}"
 collectd_plugins_dir_deduced: "{{ collectd_plugins_dir if collectd_plugins_dir else '/usr/lib/collectd' if collectd_method_deduced == 'ppa' else collectd_prefix + '/lib/collectd' }}"
+
 collectd_source_packages: [build-essential, libcurl4-openssl-dev, libpcap-dev, libyajl-dev]
