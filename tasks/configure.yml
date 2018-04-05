@@ -1,7 +1,7 @@
 ---
 
 - name: collectd-configure | Configure Collectd
-  template: src=collectd.conf.j2 dest={{collectd_config_file}} validate='{{collectd_sbin_path}}/collectd -t -C %s'
+  template: src=collectd.conf.j2 mode={{collectd_config_file_mode}} dest={{collectd_config_file}} validate='{{collectd_sbin_path}}/collectd -t -C %s'
   notify: collectd restart
 
 - name: collectd-configure | Ensure conf.d directory
